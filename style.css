@@ -1,0 +1,110 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #1e1e2f;
+  color: #fff;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  background-color: #2c2c3e;
+  padding: 40px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.timer-display {
+  font-size: 64px;
+  margin-bottom: 20px;
+}
+
+.buttons button {
+  background-color: #4a90e2;
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  margin: 0 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 2s ease, transform 0.3s ease;
+}
+
+.buttons button:hover {
+  background-color: #366daf;
+  transform: scale(1.1);
+}
+
+.texto-posTimer {
+  font-weight: bold;
+  font-size: 20px;
+  margin-top: 40px;
+}
+.esconder {
+  display: none;
+}
+.bg-popup {
+  background-color: rgba(11, 11, 14, 0.7);
+  width: 300px;
+  height: 200px;
+  border-radius: 20px;
+  position: absolute;
+  display: none;
+}
+.content-popup {
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.btn-popup {
+  width: 100px;
+  height: 30px;
+  border-radius: 15px;
+  border: none;
+  margin-top: 100px;
+  position: absolute;
+  color: white;
+  background-color: rgb(0, 0, 0, 0.8);
+}
+
+.popUpAtivo {
+  animation: popUpAnimation 1s ease forwards;
+}
+.popUpDesativado {
+  animation: popUpOut 1s ease forwards;
+}
+
+@keyframes popUpOut {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+
+@keyframes popUpAnimation {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
