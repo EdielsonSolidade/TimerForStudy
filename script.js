@@ -1,76 +1,103 @@
-const timerDisplay = document.querySelector(".timer-display");
 const pause = document.getElementById("pause-resume");
 const restart = document.getElementById("restart");
-const textoPosTimer = document.querySelector(".texto-posTimer");
 const iniciarBtn = document.getElementById("play");
-const popUp = document.querySelector(".bg-popup");
-const btnOkPopUp = document.querySelector(".btn-popup");
+const edicaoDoTimer = document.getElementById("editar-timer");
+
+const popUpRestart = document.querySelector(".bg-popup");
+const btnOkPopUpRestart = document.querySelector(".btn-popup");
+const timerDisplay = document.querySelector(".timer-display");
+const textoPosTimer = document.querySelector(".texto-posTimer");
+const popUpEdicaoTimer = document.querySelector(".bg-popup-edicao");
+const btnOkPopUpEdicao = document.querySelector(".btn-popup-edicao");
 
 const TEMPO_PADRAO = 25 * 60;
 let tempo = TEMPO_PADRAO;
 let intervalo;
-let estaRodando = true;
-let foiIniciado = false;
+let timerAtivo = true;
+let timerIniciado = false;
 
-const atualizarTimer = () => {
-  tempo = tempo - 1;
+const resetarUI = () => {
+  timerDisplay.textContent = "25:00";
+  textoPosTimer.innerHTML = "";
+};
+
+const formatarTempo = () => {
   let minutos = Math.floor(tempo / 60);
   let segundos = tempo % 60;
   let minutosFormatados = String(minutos).padStart(2, "0");
   let segundosFormatados = String(segundos).padStart(2, "0");
-  let tempoTotal = `${minutosFormatados}:${segundosFormatados}`;
-  timerDisplay.textContent = tempoTotal;
+  timerDisplay.textContent = `${minutosFormatados}:${segundosFormatados}`;
+};
+
+const finalizarTimer = () => {
+  clearInterval(intervalo);
+  textoPosTimer.innerHTML = "Você chegou no seu <br>tempo de descanso";
+};
+
+iniciarBtn.addEventListener("click", () => {
+  intervalo = setInterval(atualizarDisplay, 1000);
+  iniciarBtn.classList.add("esconder");
+  timerIniciado = true;
+});
+
+const atualizarDisplay = () => {
+  tempo = tempo - 1;
+  formatarTempo(timerDisplay);
   if (tempo === 0) {
-    clearInterval(intervalo);
-    textoPosTimer.innerHTML = "Você chegou no seu <br>tempo de descanso";
+    finalizarTimer();
   }
 };
 
-play.addEventListener("click", () => {
-  intervalo = setInterval(atualizarTimer, 1000);
-  play.classList.add("esconder");
-  foiIniciado = true;
-});
-
 pause.addEventListener("click", () => {
-  if (!foiIniciado) return;
+  if (!timerIniciado) return;
 
-  if (estaRodando) {
+  if (timerAtivo) {
     clearInterval(intervalo);
-    estaRodando = false;
+    timerAtivo = false;
     pause.textContent = "Resume";
   } else {
-    intervalo = setInterval(atualizarTimer, 1000);
-    estaRodando = true;
+    intervalo = setInterval(atualizarDisplay, 1000);
+    timerAtivo = true;
     pause.textContent = "Pause";
   }
-});
-
-function MostrarPopUp() {
-  popUp.classList.add("popUpAtivo");
-  popUp.classList.remove("popUpDesativado");
-  setTimeout(() => {
-    popUp.style.display = "block";
-  }, 10);
-}
-
-btnOkPopUp.addEventListener("click", () => {
-  popUp.classList.remove("pupUpAtivo");
-  popUp.classList.add("popUpDesativado");
-  setTimeout(() => {
-    popUp.style.display = "none";
-  }, 1000);
 });
 
 restart.addEventListener("click", () => {
   tempo = TEMPO_PADRAO;
   clearInterval(intervalo);
-  estaRodando = true;
-  foiIniciado = false;
+  timerAtivo = true;
+  timerIniciado = false;
   pause.textContent = "Pause";
-  timerDisplay.textContent = "25:00";
-  textoPosTimer.innerHTML = "";
-  play.classList.remove("esconder");
-  textoPosTimer.innerHTML = "";
-  MostrarPopUp();
+  iniciarBtn.classList.remove("esconder");
+  mostrarPopUp(popUpRestart);
+  resetarUI();
 });
+
+function mostrarPopUp(evento) {
+  evento.classList.add("popUpAtivo");
+  evento.classList.remove("popUpDesativado");
+  setTimeout(() => {
+    evento.style.display = "block";
+  }, 10);
+}
+
+function fecharPopUp(evento) {
+  evento.classList.remove("popUpAtivo");
+  evento.classList.add("popUpDesativado");
+  setTimeout(() => {
+    evento.style.display = "none";
+  }, 1000);
+}
+
+btnOkPopUpRestart.addEventListener("click", () => {
+  fecharPopUp(popUpRestart);
+});
+
+edicaoDoTimer.addEventListener("click", () => {
+  mostrarPopUp(popUpEdicaoTimer);
+});
+btnOkPopUpEdicao.addEventListener("click", () => {
+  fecharPopUp(popUpEdicaoTimer);
+});
+
+console.log(play);
